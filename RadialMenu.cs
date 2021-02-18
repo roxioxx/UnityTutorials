@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.UI;
 
 
 public class RadialMenu : MonoBehaviour
@@ -31,12 +30,13 @@ public class RadialMenu : MonoBehaviour
         Entries = new List<RadialMenuEntry>();
     }
 
-    void AddEntry(string pLabel, Texture pIcon) {
+    void AddEntry(string pLabel, Texture pIcon, RadialMenuEntry.RadialMenuEntryDelegate pCallback) {
         GameObject entry = Instantiate(EntryPreFab, transform);
 
         RadialMenuEntry rme = entry.GetComponent<RadialMenuEntry>();
         rme.SetLabel(pLabel);
         rme.SetIcon(pIcon);
+        rme.SetCallback(pCallback);
 
         Entries.Add(rme);
     }
@@ -44,7 +44,7 @@ public class RadialMenu : MonoBehaviour
     public void Open() {
 
         for(int i=0; i<NumberOfEntries; i++){
-            AddEntry(ButtonNames[i], Icons[i]);
+            AddEntry(ButtonNames[i], Icons[i], SetTargetIcon);
         }
 
         Rearrange();
@@ -93,5 +93,8 @@ public class RadialMenu : MonoBehaviour
 
     }
 
+    public void SetTargetIcon(RadialMenuEntry pEntry){
+        Debug.Log("Clicked: " + pEntry.gameObject.name);
+    }
    
 }
